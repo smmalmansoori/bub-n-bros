@@ -10,7 +10,7 @@
 # __________
 from __future__ import print_function
 from builtins import range
-import os, sys
+import os, sys, socket, tempfile, pwd, time, webbrowser
 
 
 print('Running on Python', sys.version)
@@ -19,15 +19,15 @@ if __name__ == '__main__':
     LOCALDIR = sys.argv[0]
 else:
     LOCALDIR = __file__
+
 try:
     LOCALDIR = os.readlink(LOCALDIR)
 except:
     pass
+
 sys.argv[0] = os.path.abspath(LOCALDIR)
 LOCALDIR = os.path.dirname(sys.argv[0])
 # ----------
-
-import socket, tempfile
 
 sys.path.insert(0, LOCALDIR)
 os.chdir(LOCALDIR)
@@ -36,10 +36,10 @@ try:
     username = '-'+os.getlogin()
 except:
     try:
-        import pwd
         username = '-'+pwd.getpwuid(os.getuid())[0]
     except:
         username = ''
+
 TAGFILENAME = 'BubBob-%s%s.url' % (socket.gethostname(), username)
 TAGFILENAME = os.path.join(tempfile.gettempdir(), TAGFILENAME)
 
@@ -49,13 +49,17 @@ def load_url_file():
         url = open(TAGFILENAME, 'r').readline().strip()
     except (OSError, IOError):
         return None, None
+
     if not url.startswith('http://127.0.0.1:'):
         return None, None
+
     url1 = url[len('http://127.0.0.1:'):]
+
     try:
         port = int(url1[:url1.index('/')])
     except ValueError:
         return None, None
+
     return url, port
 
 def look_for_local_server():
@@ -63,19 +67,23 @@ def look_for_local_server():
     url, port = load_url_file()
     if port is None:
         return None
+
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
         s.connect(('127.0.0.1', port))
     except socket.error as e:
         return None
+
     try:
         s.shutdown(2)
         s.close()
     except Exception as e:
         pass
+
     url2, port2 = load_url_file()
     if port2 != port:
         return None
+
     return url2
 
 def start_local_server():
@@ -86,17 +94,26 @@ def start_local_server():
             # in the child process
             if has_server:
                 sys.path.insert(0, os.path.join(LOCALDIR, 'bubbob'))
+
+                # TODO can this be moved to the top of the file?
                 import bb
+
                 bb.BubBobGame.Quiet = 1
             else:
                 sys.path.insert(0, os.path.join(LOCALDIR, 'http2'))
+
+                # TODO can this be moved to the top of the file?
                 import httppages
+
+            # TODO can this be moved to the top of the file?
             import gamesrv, stdlog
+
             logfile = stdlog.LogFile()
             if has_server:
                 bb.start_metaserver(TAGFILENAME, 0)
             else:
                 httppages.main(None, TAGFILENAME, 0)
+
             if logfile:
                 print(file=logfile)
                 if logfile:
@@ -109,17 +126,22 @@ def start_local_server():
                         os.dup2(fd, 0)
                     except OSError:
                         pass
+
                     logfile.close()
+
             gamesrv.mainloop()
             sys.exit(0)
     else:
         if not has_server:
             MAINSCRIPT = os.path.join('http2', 'httppages.py')
+
         args = [sys.executable, MAINSCRIPT, '--quiet',
                 '--saveurlto=%s' % TAGFILENAME]
+
         # (quoting sucks on Windows) ** 42
         if sys.platform == 'win32':
             args[0] = '"%s"' % (args[0],)
+
         os.spawnv(os.P_NOWAITO, sys.executable, args)
 
 
@@ -127,9 +149,9 @@ def start_local_server():
 url = look_for_local_server()
 if not url:
     start_local_server()
+
     # wait for up to 5 seconds for the server to start
     for i in range(10):
-        import time
         time.sleep(0.5)
         url = look_for_local_server()
         if url:
@@ -139,7 +161,6 @@ if not url:
         sys.exit(1)
 
 try:
-    import webbrowser
     browser = webbrowser.get()
     name = getattr(browser, 'name', browser.__class__.__name__)
     print("Trying to open '%s' with '%s'..." % (url, name))
@@ -157,6 +178,7 @@ else:
         # assume that browser.open() waited for the browser to finish
         # and that the server has been closed from the browser.
         raise SystemExit
+
     print()
     print('-'*60)
     print("If the browser fails to open the page automatically,")
