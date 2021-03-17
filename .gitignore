@@ -360,6 +360,7 @@ $RECYCLE.BIN/
 bubbob/doc/images/*.png
 
 bubbob/doc/*.html
+doc/*.html
 
 bubbob/ext1/image1-[2-9].ppm
 bubbob/ext3/image1-[2-9].ppm
