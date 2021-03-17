@@ -12,8 +12,6 @@ import modes
 from modes import KeyPressed, KeyReleased
 import caching
 
-#import psyco; psyco.full()
-
 # switch to udp_over_tcp if the udp socket didn't receive at least 60% of
 # the packets sent by the server
 UDP_EXPECTED_RATIO = 0.60
@@ -98,7 +96,7 @@ class DataChunk(caching.Data):
 
 class Playfield:
     TASKBAR_HEIGHT = 48
-    
+
     def __init__(self, s, sockaddr):
         self.s = s
         self.sockaddr = sockaddr
@@ -375,7 +373,7 @@ class Playfield:
                     currentsounds[key] = 4
             base += 6
         self.playingsounds = currentsounds
-        
+
         for j in range(len(sprites)):
             if sprites[j][0] != udpdata[base:base+6]:
                 removes = sprites[j:]
@@ -827,7 +825,7 @@ class Playfield:
     def msg_inline_frame(self, data, *rest):
         if self.pending_udp_data is not None:
             self.pending_udp_data = self.udp_over_tcp_decompress(data)
-    
+
     MESSAGES = {
         MSG_BROADCAST_PORT:msg_broadcast_port,
         MSG_DEF_PLAYFIELD: msg_def_playfield,
@@ -851,10 +849,4 @@ class Playfield:
 
 
 def run(s, sockaddr, *args, **kw):
-    try:
-        import psyco
-    except ImportError:
-        pass
-    else:
-        psyco.bind(Playfield.update_sprites)
     Playfield(s, sockaddr).run(*args, **kw)

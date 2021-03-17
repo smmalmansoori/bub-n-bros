@@ -27,17 +27,17 @@ MAX = 2 + len (COLORS)
 ## By ION:
 #
 # Here's the new palette-based method.
-# 
-# It's an array [N][320] of 24bit unsigned integers 
+#
+# It's an array [N][320] of 24bit unsigned integers
 # (where N is the total number of color sets including the original one.)
-# 
+#
 # That is, you access it like
 #
 # Palettes[(PALETTESIZE * palettenumber)+paletteindex]
 #
 # Activate it by passing a palette file as a cmdline argument.
 #
-# The color mapping could be further sped up 
+# The color mapping could be further sped up
 # by making Palettes an array of bytes rather than ints,
 # at the cost of increased complexity (Palettes [ (PALETTESIZE * 3 * palettenumber) + paletteindex + component])
 #
@@ -161,7 +161,7 @@ def paletterotate (imglist, chr=chr, int=int, ord=ord):
     for reserved in COLORS:
         # is not being entered, the fool.
 #        lut = {}
-#        for         
+#        for
         thispalette = Palettes[(PALETTESIZE * (reserved + 1)):(PALETTESIZE * (reserved + 2))]
 	# wot is this? _ means unused?
 #       (_, _, otherimage) = imglist[1-n]
@@ -290,12 +290,6 @@ if __name__ == '__auto__':    # when execfile'd from images.py
     for fn, r in rebuild:
         if r:
             convert(fn)
-    
-#try:
-#    import psyco
-#    psyco.bind(rotate)
-#except:
-#    pass
 
 if __name__ == '__main__':
     if sys.argv[1:2] == ['-f']:

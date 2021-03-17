@@ -21,7 +21,7 @@ class Board(Copyable):
     lightning = 0
     water     = 0
     top       = 0
-    
+
     WIND_DELTA = HALFCELL
 
     def __init__(self, num):
@@ -510,7 +510,7 @@ def wait_for_one_player():
                 "Click again for more than one player",
                 "on the same machine.",
                 ])
-            
+
             from mnstrmap import PlayerBubbles
             nimages = [PlayerBubbles.bubble[0],
                        PlayerBubbles.bubble[1],
@@ -536,7 +536,7 @@ def wait_for_one_player():
 
             yield 10
             gamesrv.set_musics([], [images.music_game2], reset=0)
-        
+
         if ((not images.ActiveSprites or random.random() < 0.05678) and
             gamesrv.clients):
             # make sure the extension's images are loaded too
@@ -544,7 +544,7 @@ def wait_for_one_player():
             import ext1; import ext2; import ext3
             import ext4; import ext5; import ext6
             import ext7
-            
+
             ico = images.sprget(nimages[0])
             s = images.ActiveSprite(ico,
                                     random.randrange(0, screenwidth-ico.w),
@@ -680,7 +680,7 @@ def normal_frame():
 
     # main generator dispatch loop
     images.action(images.ActiveSprites[:])
-    
+
     frametime = 10
     for p in BubPlayer.PlayerList:
         if p.isplaying():
@@ -905,7 +905,7 @@ def game_reset():
 ##            p.letters = {}
 ##            p.bonbons = p.points // 50000
 ##    scoreboard()
-    
+
 ##    while len(BubPlayer.DragonList) > 1:
 ##        if random.random() < 0.03:
 ##            bubbles.newbubble(1)
@@ -1236,11 +1236,11 @@ def extra_swap_up_down(N=27):
     wallicon = l[0].ico
     wallpool = l[:]
     l[:] = [gamesrv.Sprite(wallicon, 0, -wallicon.h)]
-    
+
     # force the top half of the walls on front
     #for (y,x), w in walls:
     #    if y*2 < height:
-    
+
     # show the walls swapping up/down
     ycenter = ((height-1)*CELL) // 2
     for i in range(N):
@@ -1265,7 +1265,7 @@ def extra_swap_up_down(N=27):
             from player import BubPlayer
             for dragon in BubPlayer.DragonList:
                 dragon.dcap['gravity'] *= -1.0
-    
+
     # freeze the walls in their new position
     i = 0
     for (y,x), w in walls:
@@ -1460,11 +1460,3 @@ def register(dict):
 ##    bwidth = width*CELL
 ##    bheight = height*CELL
 ##    bheightmod = len(boards[0].lines)*CELL
-
-
-#try:
-#    import psyco
-#except ImportError:
-#    pass
-#else:
-#    psyco.bind(normal_frame)

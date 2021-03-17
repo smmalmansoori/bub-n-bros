@@ -8,11 +8,6 @@ sys.path.insert(1, os.path.abspath(os.path.join(os.pardir, 'common')))
 from images import sprmap
 import bonuses, images
 
-try:
-    import psyco; psyco.full()
-except ImportError:
-    pass
-
 def create_image(name,source,extralines=0,alt=''):
     if len(sys.argv) == 2 and sys.argv[1] == '-i':
         return
@@ -59,7 +54,7 @@ def html_tag(name, alt):
     url = 'data:image/png;base64,' + alldata.encode('base64').replace('\n','')
     return '<IMG SRC="%s" ALT="%s">' % (url, alt)
 
-    
+
 def split_name(name):
     "Split a name into its words based on capitalisation."
     words = []

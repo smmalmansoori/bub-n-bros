@@ -7,12 +7,8 @@ import os, sys
 from Xlib import X, display
 
 
-# -*-*- SLOOWWW -*-*-
-import psyco; psyco.full()
-
-
 class Display:
-    
+
     def __init__(self, width, height, title):
         self.dpy = display.Display()
         self.default_scr = self.dpy.screen()
@@ -20,7 +16,7 @@ class Display:
         self.width = width
         self.height = height
         self.depth = self.default_scr.root_depth
-        
+
         self.backpixmap = self.root.create_pixmap(width, height, self.depth)
         self.win = self.root.create_window(
             0, 0, width, height, 0, self.depth,
@@ -29,7 +25,7 @@ class Display:
             backing_store = X.NotUseful,
             )
         self.win.map()
-        
+
         self.gc     = self.win.create_gc()
         self.gc_and = self.win.create_gc()
         self.gc_or  = self.win.create_gc()

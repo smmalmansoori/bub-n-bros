@@ -48,7 +48,7 @@ class Icon:
 
 
 class DataChunk:
-  
+
   def __init__(self):
     for c in clients:
       if c.initialized == 2:
@@ -126,7 +126,7 @@ class Bitmap(DataChunk):
 
 
 class MemoryBitmap(Bitmap):
-  
+
   def __init__(self, code, data, colorkey=None):
     self.data = data
     Bitmap.__init__(self, code, None, colorkey)
@@ -281,14 +281,6 @@ def compactsprites(insert_new=None, insert_before=None):
 
 
 class Sprite:
-
-##  try:
-##    import psyco.classes
-##  except ImportError:
-##    pass
-##  else:
-##    __slots__ = ['x', 'y', 'ico', 'alive']
-##    __metaclass__ = psyco.classes.psymetaclass
 
   def __init__(self, ico, x,y):
     self.x = x
@@ -538,10 +530,10 @@ class Client:
         yield head + chr(frame), co
         yield None, co2
         threads.append((chr(ord(head[0]) | 8) + chr(frame), co2))
-        
+
         yield None, None
         frame = (frame + 1) & 0xFF
-    
+
     self.dyncompress = dyncompress()
 
   def dynamic_compress(self, framedata):
@@ -823,7 +815,7 @@ class SimpleClient(Client):
       self.msgl.append(message(MSG_DEF_KEY, keyname, num,
                                *[ico.code for ico in icolist]))
       num += 1
-  
+
   def cmsg_key(self, pid, keynum):
     if game is not None:
       try:
@@ -996,7 +988,7 @@ def opentcpsocket(port=None):
     def tcpsocket_handler(s=s):
       conn, addr = s.accept()
       game.newclient(conn, addr)
-    
+
     addsocket('LISTEN', s, tcpsocket_handler)
   return s
 
@@ -1373,6 +1365,6 @@ else:
           self.write(message(MSG_RECORDED, udpdata))
           self.f.write(''.join(self.msgl))
           del self.msgl[:]
-  
+
   recording = RecordFile(recordfilename)
   del recordfilename

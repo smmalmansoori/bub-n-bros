@@ -11,8 +11,6 @@ from common import hostchooser
 import modes
 from modes import KeyPressed, KeyReleased
 
-#import psyco; psyco.full()
-
 SOURCEDIR = os.pardir
 
 
@@ -47,7 +45,7 @@ class Icon:
 
 class Playback:
     gameident = 'Playback'
-    
+
     def __init__(self, filename, mode=('x', 'off', {})):
         f = gzip.open(filename, 'rb')
         self.screenmode = mode
